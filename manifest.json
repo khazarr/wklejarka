@@ -1,6 +1,6 @@
 {
-  "name": "Page Redder",
-  "description": "Make the current page red",
+  "name": "Paster",
+  "description": "Make your typing faster!",
   "version": "2.0",
   "permissions": [
     "activeTab"
@@ -10,9 +10,16 @@
         "matches": [
           "<all_urls>"
         ],
+        "css": [
+          "bootstrap.min.css"
+        ],
         "js": [
-          "myscript.js"
-        ]
+          "jquery-3.3.1.min.js",
+          "bootstrap.bundle.min.js",
+          "paster.js"
+        ],
+        "run_at": "document_end",
+        "all_frames": true
       }
     ],
   "background": {
@@ -25,5 +32,10 @@
   "manifest_version": 2,
   "web_accessible_resources": [
     "modal.html"
-  ]
+  ],
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  }
 }

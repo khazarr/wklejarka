@@ -7,13 +7,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   // No tabs or host permissions needed!
   console.log('Turning ' + tab.url + ' red!');
   chrome.tabs.executeScript({
-    code: 'document.body.style.backgroundColor="red"'
+    code: 'alert("Halko, wkrótce coś tu będzie")'
   });
 });
 
-document.onmousemove = function (e) {
-  var x = e.pageX;
-  var y = e.pageY;
-  // do what you want with x and y
-  console.log(`x=${x} y=${y}`)
-};
