@@ -1,24 +1,5 @@
-<form class="pure-form pure-form-stacked" v-on:submit.prevent="doLogin" id="inserterForm">
-    <fieldset>
-        <legend></legend>
 
-        <label for="grant-type">grant_type</label>
-        <input id="grant-type" v-model="user.grant_type" type="text" readonly>
 
-        <label for="client-id">client_id</label>
-        <input id="client-id" v-model="user.client_id" type="text" readonly>
-
-        <label for="username">Username</label>
-        <input id="username" v-model="user.username" type="text" placeholder="Username">
-
-        <label for="password">Password</label>
-        <input id="password" v-model="user.password" type="password" placeholder="Password">
-
-        <button type="submit" class="pure-button pure-button-primary">PUSH</button>
-        <p v-if="submitData">{{submitData|json}}</p>
-    </fieldset>
-</form>
-
-<style>
-
-</style>
+<div id="inserterForm">
+ {{ HTML }}
+</div>

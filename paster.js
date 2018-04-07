@@ -6,7 +6,8 @@ const snippets = new Map();
 snippets.set('/te', 'super testowe lele')
 snippets.set('/tr', 'inne testowe poważne hasełko\nktóre ma 2 linie')
 snippets.set('/qw', {
-  modal: 'modal.html'
+  modal: 'modal.html',
+  HTML: 'Hehe dzieki [[imie]]'
 })
 
 function inputFieldBasicHandle(textArea, foundCode, snippetInsert){
@@ -22,13 +23,7 @@ function inputFieldModalHandle(textArea, key, value) {
         const app = new Vue({
           el: '#inserterForm',
           data: {
-            user: {
-              'grant_type': 'password',
-              username: null,
-              password: null,
-              'client_id': 'test form'
-            },
-            submitData: null
+            HTML: value.HTML
           },
           methods: {
             doLogin: function () {
@@ -71,22 +66,6 @@ document.addEventListener('keyup', function (event) {
 //   console.log("User clicked a 2 " + e.target.nodeName + " element.");
 // };
 
-
-
-
-
-// document.onclick = function (e) {
-//     // e.target, e.srcElement and e.toElement contains the element clicked.
-//     console.log("User clicked a 2 " + e.target.nodeName + " element.");
-//     console.log(e.target);
-//     console.log(chrome.runtime.getURL('/modal.html'))
-//     httpGetAsync(chrome.runtime.getURL('/modal.html'), resp => {
-//         console.log(resp)
-//         document.body.insertBefore(createElementFromHTML(resp), document.body.firstChild);
-//         $('#pasterModal').modal('show')
-//     })
-
-// };
 
 
 
