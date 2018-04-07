@@ -1,56 +1,38 @@
 const pressed = []
 const MAX_LENGTH = 10
-const test_code = '/te'
-const test_insert = 'super testowe lelel'
 
-const snippets = [
-  {
-    code: '/te',
-    text: 'super testowe lele'
-  },
-  {
-    code: '/te',
-    text: 'super testowe lele'
-  },
-]
+
+const snippets = new Map();
+snippets.set('/te', 'super testowe lele')
+snippets.set('/tr', 'inne testowe poważne hasełko')
 
 function textAreaHandle(textArea, foundCode, snippetInsert){
   console.log('podmienianko ')
   console.log(textArea.value)
   console.log(textArea.value.includes(test_code))
   textArea.value = textArea.value.replace(foundCode, snippetInsert)
+}
 
+function checkForOccurence(textArea) {
+  for (let [key, value] of snippets) {
+    if (pressed.join('').includes(key)) {
+      textAreaHandle(textArea, key, value)
+      pressed.length = 0 //clear array
+    }
+  }
 }
 
 document.addEventListener('keyup', function (event) {
   const key = event.key; // "a", "1", "Shift", etc.
   pressed.push(key)
-
   pressed.splice(-MAX_LENGTH - 1, pressed.length - MAX_LENGTH)
-  console.log(`czy zawiera? ${pressed.join('').includes(test_code)}`)
-  console.log(`current target ${event.target.type}`)
-  console.log(event)
-  console.log(pressed)
 
-  if (pressed.join('').includes(test_code) && event.target.type == 'textarea') {
-
-    textAreaHandle(event.target, test_code, test_insert)
-    pressed.length = 0 //clear array
+  if (event.target.type == 'textarea') {
+    checkForOccurence(event.target)
   }
 });
 
-// document.addEventListener('keydown', function (event) {
-//   const key = event.key; // "a", "1", "Shift", etc.
-//   console.log('keydown')
-//   console.log(event)
-//   console.log(key)
-// });
-// document.addEventListener('keyup', function (event) {
-//   const key = event.key; // "a", "1", "Shift", etc.
-//   console.log('keyup')
-//   console.log(event)
-//   console.log(key)
-// });
+
 
 // document.onclick = function (e) {
 //   // e.target, e.srcElement and e.toElement contains the element clicked.
