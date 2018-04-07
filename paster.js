@@ -7,7 +7,14 @@ snippets.set('/te', 'super testowe lele')
 snippets.set('/tr', 'inne testowe poważne hasełko\nktóre ma 2 linie')
 snippets.set('/qw', {
   modal: 'modal.html',
-  HTML: 'Hehe dzieki [[imie]]'
+  HTML: 'Hehe dzieki [[imie]]',
+  inputs: [
+    {
+      type: 'text',
+      variable: 'imie',
+      value: '',
+      snippet: 'Hehe dzieki <b>imie</b>'
+    }]
 })
 
 function inputFieldBasicHandle(textArea, foundCode, snippetInsert){
@@ -23,15 +30,21 @@ function inputFieldModalHandle(textArea, key, value) {
         const app = new Vue({
           el: '#inserterForm',
           data: {
-            HTML: value.HTML
+            HTML: value.HTML,
+            inputs: value.inputs,
+            snippetsRegex: /<b>.+<\/b>/
+          },
+          mounted() {
+            document.querySelector(this.inputs[0].variable).focus()
           },
           methods: {
-            doLogin: function () {
-              this.submitData = this.user;
+            onInputChange(el) {
+              console.log(el)
+              el.snippet = el.snippet.replace(this.snippetsRegex,`<b>${el.value}</b>`)
             }
           }
         });
-      }, 1000)
+      }, 100)
  
   })
 }

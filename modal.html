@@ -1,5 +1,10 @@
-
-
 <div id="inserterForm">
- {{ HTML }}
+    <div v-for="input in inputs">
+        <label :for="input.variable">{{input.variable}}</label>
+        <input autofocus ="input.variable" v-model="input.value" type="input.type" v-on:keyup="onInputChange(input)">
+        <div class="preview" v-html="input.snippet"></div>
+    </div>
+    <div class="preview">{{ HTML }}</div>
+
+
 </div>
