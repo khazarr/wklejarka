@@ -1,23 +1,24 @@
-<div class="modal fade show" id="pasterModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<form class="pure-form pure-form-stacked" v-on:submit.prevent="doLogin" id="inserterForm">
+    <fieldset>
+        <legend></legend>
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Modal Heading</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+        <label for="grant-type">grant_type</label>
+        <input id="grant-type" v-model="user.grant_type" type="text" readonly>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                Modal body..
-            </div>
+        <label for="client-id">client_id</label>
+        <input id="client-id" v-model="user.client_id" type="text" readonly>
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
+        <label for="username">Username</label>
+        <input id="username" v-model="user.username" type="text" placeholder="Username">
 
-        </div>
-    </div>
-</div>
+        <label for="password">Password</label>
+        <input id="password" v-model="user.password" type="password" placeholder="Password">
+
+        <button type="submit" class="pure-button pure-button-primary">PUSH</button>
+        <p v-if="submitData">{{submitData|json}}</p>
+    </fieldset>
+</form>
+
+<style>
+
+</style>
