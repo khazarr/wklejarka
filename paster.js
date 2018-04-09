@@ -7,7 +7,7 @@ snippets.set('/te', 'super testowe lele')
 snippets.set('/tr', 'inne testowe poważne hasełko\nktóre ma 2 linie')
 snippets.set('/qw', {
   modal: 'modal.html',
-  HTML: 'Hehe dzieki [[imie]]',
+  HTML: 'Hehe dzieki %imie%',
   inputs: [
     {
       type: 'text',
@@ -25,21 +25,24 @@ function inputFieldBasicHandle(textArea, foundCode, snippetInsert){
 function inputFieldModalHandle(textArea, key, value) {
   console.log('inserting modal')
     httpGetAsync(chrome.runtime.getURL('/modal.html'), resp => {
-      document.body.insertBefore(createElementFromHTML(resp), document.body.firstChild);
+      console.log(generateFormHTML(value))
+      document.body.insertBefore(createElementFromHTML(generateFormHTML(value)), document.body.firstChild);
       setTimeout(() => {
         const app = new Vue({
           el: '#inserterForm',
           data: {
             HTML: value.HTML,
             inputs: value.inputs,
-            snippetsRegex: /<b>.+<\/b>/
+            snippetsRegex: /<b>.+<\/b>/,
+            halko: ''
           },
           mounted() {
-            document.querySelector(this.inputs[0].variable).focus()
+            // document.querySelector(this.inputs[0].variable).focus()
           },
           methods: {
             onInputChange(el) {
               console.log(el)
+              console.log(this)
               el.snippet = el.snippet.replace(this.snippetsRegex,`<b>${el.value}</b>`)
             }
           }
@@ -98,4 +101,23 @@ function createElementFromHTML(htmlString) {
 
     // Change this to div.childNodes to support multiple top-level nodes
     return div.firstChild;
+}
+
+
+function generateFormHTML(snippetData) {
+  function replaceVariableWithInput(inputs) {
+    console.log(snippetData.HTML)
+    inputs.forEach((input, index) => {
+      console.log('FOR ICZ')
+      console.log(input)
+      console.log(snippetData.HTML)
+      const createdInput = ` <input v-model="inputs[${index}].value" type="${input.type}" placeholder="${input.variable}" v-on:keyup="onInputChange(this)">`
+      snippetData.HTML = snippetData.HTML.replace(`%${input.variable}%`,createdInput)
+    })
+  }
+  replaceVariableWithInput(snippetData.inputs)
+  return `<div id="inserterForm">
+    <div>Super działanko xD</div>
+    ${snippetData.HTML}
+</div>`
 }
