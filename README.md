@@ -1,4 +1,5 @@
 # wklejarka / Paster 
+ A chrome extension that's make your typing faster.
 ## Features
 
 - Insert text snippet (simple replace)
@@ -37,6 +38,7 @@
 
 ## How it works?
 - just type your **key** in any input
+![screenshot of usage](https://preview.ibb.co/jWUf7H/screenshot.jpg)
 
 ## To Do
 - snippets stored in db
