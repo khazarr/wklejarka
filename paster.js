@@ -7,7 +7,7 @@ snippets.set('/te', 'super testowe lele')
 snippets.set('/tr', 'inne testowe poważne hasełko\nktóre ma 2 linie')
 snippets.set('/qw', {
   modal: 'modal.html',
-  HTML: 'Hehe dzieki %imie%',
+  HTML: 'Hehe dzieki %imie% to jest ostra beka. \n smieszna sprawa %imie% \n ciekawe jak to wyjdzie %imie% asda',
   inputs: [
     {
       type: 'text',
@@ -24,6 +24,7 @@ function inputFieldBasicHandle(textArea, foundCode, snippetInsert){
 
 function inputFieldModalHandle(textArea, key, value) {
   console.log('inserting modal')
+  textArea.blur()
     httpGetAsync(chrome.runtime.getURL('/modal.html'), resp => {
       console.log(generateFormHTML(value))
       document.body.insertBefore(createElementFromHTML(generateFormHTML(value)), document.body.firstChild);
@@ -43,12 +44,36 @@ function inputFieldModalHandle(textArea, key, value) {
             onInputChange(el) {
               console.log(el)
               console.log(this)
-              el.snippet = el.snippet.replace(this.snippetsRegex,`<b>${el.value}</b>`)
+              // el.snippet = el.snippet.replace(this.snippetsRegex,`<b>${el.value}</b>`)
+            },
+            onEnterPressed() {
+              console.log('enter pressed')
+              console.log(this.$el.childNodes[0].childNodes)
+              let outputString = ""
+
+              this.$el.childNodes[0].childNodes.forEach((el) => {
+                el.nodeName == "INPUT"
+                  ? outputString += el.value
+                  : outputString += el.data
+                console.log(outputString)
+                console.log(el)
+              })
+              console.log('RESULT')
+              console.log(outputString)
+              console.log(textArea.value)
+              textArea.value = textArea.value.replace(key, outputString)
+              const thisForm = document.querySelector('#inserterForm')
+              thisForm.parentNode.removeChild(thisForm);
+              textArea.focus()
+              this.$destroy()
             }
           }
         });
       }, 100)
- 
+      setTimeout(()=>{
+        console.log('focusing')
+        document.querySelector(`#${value.inputs[0].variable}`).focus()
+      },300)
   })
 }
 function checkForOccurence(textArea) {
@@ -66,10 +91,10 @@ document.addEventListener('keyup', function (event) {
   const key = event.key; // "a", "1", "Shift", etc.
   pressed.push(key)
   pressed.splice(-MAX_LENGTH - 1, pressed.length - MAX_LENGTH)
-  console.log(pressed)
-  console.log(event)
-  console.log(event.target)
-  console.log(event.target.type)
+  // console.log(pressed)
+  // console.log(event)
+  // console.log(event.target)
+  // console.log(event.target.type)
   if (event.target.type == 'textarea' || event.target.tagName == 'INPUT') {
     checkForOccurence(event.target)
   }
@@ -106,18 +131,14 @@ function createElementFromHTML(htmlString) {
 
 function generateFormHTML(snippetData) {
   function replaceVariableWithInput(inputs) {
-    console.log(snippetData.HTML)
     inputs.forEach((input, index) => {
-      console.log('FOR ICZ')
-      console.log(input)
-      console.log(snippetData.HTML)
-      const createdInput = ` <input v-model="inputs[${index}].value" type="${input.type}" placeholder="${input.variable}" v-on:keyup="onInputChange(this)">`
-      snippetData.HTML = snippetData.HTML.replace(`%${input.variable}%`,createdInput)
+      // dodać tutaj hidden label (dzięki któremy zadziała metoda .text() )
+      const createdInput = ` <input v-model="inputs[${index}].value" type="${input.type}" placeholder="${input.variable}" id="${input.variable}" @keyup.enter="onEnterPressed">`
+      const regex = new RegExp(`%${input.variable}%`,"g")
+      snippetData.HTML = snippetData.HTML.replace(regex,createdInput)
     })
   }
   replaceVariableWithInput(snippetData.inputs)
   return `<div id="inserterForm">
-    <div>Super działanko xD</div>
-    ${snippetData.HTML}
-</div>`
+    <div>${snippetData.HTML}</div>`
 }
