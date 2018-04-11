@@ -14,7 +14,6 @@
           "form.css"
         ],
         "js": [
-          "jquery-3.3.1.min.js",
           "vue.min.js",
           "paster.js"
         ],
@@ -27,7 +26,7 @@
     "persistent": false
   },
   "browser_action": {
-    "default_title": "Make this page red"
+    "default_title": "Click me!"
   },
   "manifest_version": 2,
   "web_accessible_resources": [

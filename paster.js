@@ -97,9 +97,9 @@ const pasterModule = {
             console.log(this.$el.childNodes[0].childNodes)
             let outputString = ""
             this.$el.childNodes[0].childNodes.forEach((el) => {
-              el.nodeName == "INPUT" ?
-                outputString += el.value :
-                outputString += el.data
+              el.nodeName == "INPUT" 
+                ? outputString += el.value 
+                : outputString += el.data
             })
             textArea.value = textArea.value.replace(key, outputString)
             const thisForm = document.querySelector('#inserterForm')
@@ -133,9 +133,9 @@ const pasterModule = {
     const moduleSnippets = this.snippets
     for (let [key, value] of moduleSnippets) {
       if (this.pressed.join('').includes(key)) {
-        typeof value === 'string' ?
-          this.inputFieldBasicHandle(textArea, key, value) :
-          this.inputFieldModalHandle(textArea, key, value)
+        typeof value === 'string' 
+          ? this.inputFieldBasicHandle(textArea, key, value) 
+          : this.inputFieldModalHandle(textArea, key, value)
         this.pressed.length = 0 //clear array
       }
     }
