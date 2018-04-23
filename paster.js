@@ -23,6 +23,24 @@ const ajaxRespSomeday =
     }
   },
   {
+      key: '/ins',
+      value: {
+        HTML: 'Hello %name%! I will see %item% later',
+        inputs: [
+          {
+            type: 'text',
+            variable: 'name',
+            value: '',
+          },
+          {
+            type: 'text',
+            variable: 'item',
+            value: '',
+          },
+        ]
+      }
+    },
+  {
     key: '/reco',
     value: {
       HTML: '%main%%ver% \n %product%%ver% \n %category%%ver% \n %basket%%ver%',
@@ -65,8 +83,41 @@ const pasterModule = {
   snippetsArray: [],
   getSnippets() {
     //some ajax to db someday
-    this.snippetsArray = ajaxRespSomeday
-    this.setSnippetsMap()
+    const snippets = []
+    firebase.database().ref('snippets').once('value')
+      .then(data => {
+        console.log('obtained data')
+        console.log(data.val())
+        const obj = data.val()
+        for (let key in obj) {
+          const snippet = {
+            id: key,
+            key: obj[key].key,
+            value: obj[key].value
+          }
+          snippets.push(snippet)
+        }
+        console.log('mamy to :D')
+        console.log(snippets)
+        this.snippetsArray = snippets
+        this.setSnippetsMap()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    
+  },
+  initializeFirebase() {
+    const config = {
+      apiKey: "AIzaSyCHjEQ3-l-v9zu9Tgwr0hDNMpw2kIom51U",
+      authDomain: "wklejarka-1d39e.firebaseapp.com",
+      databaseURL: "https://wklejarka-1d39e.firebaseio.com",
+      projectId: "wklejarka-1d39e",
+      storageBucket: "wklejarka-1d39e.appspot.com",
+      messagingSenderId: "480680450073"
+    }
+    firebase.initializeApp(config);
+    console.log('firebase initalized')
   },
   setSnippetsMap() {
     this.snippetsArray.map(snip => {
@@ -97,6 +148,7 @@ const pasterModule = {
             console.log(this.$el.childNodes[0].childNodes)
             let outputString = ""
             this.$el.childNodes[0].childNodes.forEach((el) => {
+              console.log(el)
               el.nodeName == "INPUT" 
                 ? outputString += el.value 
                 : outputString += el.data
@@ -142,9 +194,11 @@ const pasterModule = {
   },
   init() {
     console.log('module initialized PASTER')
+    this.initializeFirebase()
     this.getSnippets()
     document.addEventListener('keyup', event => {
       const key = event.key; // "a", "1", "Shift", etc.
+      console.log(this.pressed)
       if (key != "Backspace") {
         this.pressed.push(key)
         this.pressed.splice(-this.MAX_LENGTH - 1, this.pressed.length - this.MAX_LENGTH)

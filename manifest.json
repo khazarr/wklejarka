@@ -15,10 +15,10 @@
         ],
         "js": [
           "vue.min.js",
+          "firebase.js",
           "paster.js"
         ],
-        "run_at": "document_end",
-        "all_frames": true
+        "run_at": "document_end"
       }
     ],
   "background": {
