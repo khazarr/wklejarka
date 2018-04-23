@@ -139,7 +139,8 @@ const pasterModule = {
           HTML: value.HTML,
           inputs: value.inputs,
           snippetsRegex: /<b>.+<\/b>/,
-          halko: ''
+          halko: '',
+          oldValue: value.oldValue
         },
         mounted() {},
         methods: {
@@ -147,13 +148,23 @@ const pasterModule = {
             console.log('enter pressed')
             console.log(this.$el.childNodes[0].childNodes)
             let outputString = ""
+            //populate set with input values
+
+
+
             this.$el.childNodes[0].childNodes.forEach((el) => {
-              console.log(el)
+              if(el.nodeName == "INPUT") {
+                console.log(el)
+                console.log('id:' + el.id)
+                console.log('val:' + el.value)
+              }
               el.nodeName == "INPUT" 
                 ? outputString += el.value 
                 : outputString += el.data
             })
             textArea.value = textArea.value.replace(key, outputString)
+            console.log(this.oldValue)
+            // textArea.value = textArea.value.replace(key, value.HTML)
             const thisForm = document.querySelector('#inserterForm')
             thisForm.parentNode.removeChild(thisForm);
             textArea.focus()
@@ -177,6 +188,7 @@ const pasterModule = {
         snippetData.HTML = snippetData.HTML.replace(regex, createdInput)
       })
     }
+    snippetData.oldValue = snippetData.HTML
     replaceVariableWithInput(snippetData.inputs)
     return `<div id="inserterForm">
     <div>${snippetData.HTML}</div>`
