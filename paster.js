@@ -117,7 +117,6 @@ const pasterModule = {
       messagingSenderId: "480680450073"
     }
     firebase.initializeApp(config);
-    console.log('firebase initalized')
   },
   setSnippetsMap() {
     this.snippetsArray.map(snip => {
@@ -147,24 +146,20 @@ const pasterModule = {
           onEnterPressed() {
             console.log('enter pressed')
             console.log(this.$el.childNodes[0].childNodes)
-            let outputString = ""
-            //populate set with input values
 
-
-
+            const fromInputs = []
             this.$el.childNodes[0].childNodes.forEach((el) => {
               if(el.nodeName == "INPUT") {
-                console.log(el)
-                console.log('id:' + el.id)
-                console.log('val:' + el.value)
+                fromInputs.push({
+                  inputName: `%${el.id}%`,
+                  inputValue: el.value
+                })
               }
-              el.nodeName == "INPUT" 
-                ? outputString += el.value 
-                : outputString += el.data
             })
-            textArea.value = textArea.value.replace(key, outputString)
-            console.log(this.oldValue)
-            // textArea.value = textArea.value.replace(key, value.HTML)
+            fromInputs.map(el => {
+              this.oldValue = this.oldValue.replace(el.inputName, el.inputValue)
+            })
+            textArea.value = textArea.value.replace(key, this.oldValue)
             const thisForm = document.querySelector('#inserterForm')
             thisForm.parentNode.removeChild(thisForm);
             textArea.focus()
@@ -210,7 +205,7 @@ const pasterModule = {
     this.getSnippets()
     document.addEventListener('keyup', event => {
       const key = event.key; // "a", "1", "Shift", etc.
-      console.log(this.pressed)
+      // console.log(this.pressed)
       if (key != "Backspace") {
         this.pressed.push(key)
         this.pressed.splice(-this.MAX_LENGTH - 1, this.pressed.length - this.MAX_LENGTH)
